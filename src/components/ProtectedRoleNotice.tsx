@@ -1,4 +1,5 @@
 import React from 'react'
+import { t } from '../i18n'
 
 /**
  * Simple notice component to display when editing a protected role
@@ -20,10 +21,9 @@ export const ProtectedRoleNotice: React.FC = () => {
     >
       <span style={{ fontSize: '18px', lineHeight: '1' }}>🔒</span>
       <div>
-        <strong>Protected System Role</strong>
+        <strong>{t('components.protectedRoleNotice.title')}</strong>
         <p style={{ margin: '4px 0 0 0', fontSize: '14px', opacity: 0.9 }}>
-          This is a protected system role that is essential for the application&apos;s operation. 
-          You can customize its description and permissions to meet your needs.
+          {t('components.protectedRoleNotice.description')}
         </p>
       </div>
     </div>

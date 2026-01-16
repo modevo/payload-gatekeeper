@@ -97,6 +97,8 @@ import { gatekeeperPlugin } from 'payload-gatekeeper'
 export default buildConfig({
   plugins: [
     gatekeeperPlugin({
+      // Set locale for translations (default: 'en')
+      locale: 'de', // Use German translations
       // Configure specific collections
       collections: {
         'admin-users': {
@@ -592,6 +594,62 @@ async function myCustomEndpoint(req: PayloadRequest) {
 }
 ```
 
+## Internationalization (i18n)
+
+The plugin supports multiple languages out of the box. Currently supported locales:
+- `en` - English (default)
+- `de` - German
+
+### Using a Different Locale
+
+```typescript
+gatekeeperPlugin({
+  locale: 'de', // Use German translations
+  // ... other options
+})
+```
+
+### Available Locales
+
+You can check available locales and change them programmatically:
+
+```typescript
+import { setLocale, getLocale, t, type Locale } from 'payload-gatekeeper'
+
+// Get current locale
+const currentLocale: Locale = getLocale() // 'en' or 'de'
+
+// Change locale
+setLocale('de')
+
+// Translate a string
+const translated = t('components.protectedRoleNotice.title')
+```
+
+### Adding New Locales
+
+To add support for a new language:
+
+1. Create a new translation file: `src/i18n/translations/[locale].json`
+2. Copy the structure from `en.json` and translate all values
+3. Update the `Locale` type in `src/i18n/index.ts` to include your locale
+4. Import and add your translations to the `translations` object
+
+Example for French (`fr`):
+
+```typescript
+// src/i18n/index.ts
+import frTranslations from './translations/fr.json'
+
+export type Locale = 'en' | 'de' | 'fr'
+
+const translations: Record<Locale, TranslationResources> = {
+  en: enTranslations,
+  de: deTranslations,
+  fr: frTranslations,
+}
+```
+
 ## API Reference
 
 ### Plugin Options
@@ -607,6 +665,7 @@ async function myCustomEndpoint(req: PayloadRequest) {
 | `syncRolesOnInit` | `boolean` | Force role sync on every init | `false` |
 | `rolesGroup` | `string` | UI group name for Roles collection | `'System'` |
 | `rolesSlug` | `string` | Custom slug for Roles collection | `'roles'` |
+| `locale` | `'en' \| 'de'` | Locale for translations | `'en'` |
 
 ### Collection Configuration
 

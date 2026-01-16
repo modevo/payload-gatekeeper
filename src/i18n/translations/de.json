@@ -1,0 +1,124 @@
+{
+  "components": {
+    "protectedRoleNotice": {
+      "title": "Geschützte Systemrolle",
+      "description": "Dies ist eine geschützte Systemrolle, die für den Betrieb der Anwendung unerlässlich ist. Du kannst deren Beschreibung und Berechtigungen nach deinen Bedürfnissen anpassen."
+    },
+    "permissionsSelect": {
+      "placeholder": "Berechtigungen auswählen...",
+      "loading": "Berechtigungen werden geladen..."
+    }
+  },
+  "collections": {
+    "roles": {
+      "description": "Administratorrollen und deren Berechtigungen verwalten",
+      "fields": {
+        "name": {
+          "description": "Eindeutiger Rollenbezeichner (z.B. super_admin, admin, editor)"
+        },
+        "label": {
+          "description": "Anzeigename für die Rolle"
+        },
+        "permissions": {
+          "description": "Berechtigungen für diese Rolle auswählen."
+        },
+        "description": {
+          "description": "Optionale Beschreibung der Rolle und ihres Zwecks"
+        },
+        "active": {
+          "description": "Inaktive Rollen können nicht verwendet werden"
+        },
+        "configHash": {
+          "description": "Hash der Rollenkonfiguration zur Versionsverfolgung"
+        },
+        "configVersion": {
+          "description": "Versionsnummer für optimistische Sperre"
+        },
+        "systemManaged": {
+          "description": "Gibt an, ob diese Rolle vom System verwaltet wird"
+        },
+        "visibleFor": {
+          "description": "Auswählen, welche für die Authentifizierung aktivierten Sammlungen diese Rolle sehen und zuweisen können. Leer lassen für alle Authentifizierungssammlungen."
+        }
+      },
+      "errors": {
+        "nameCannotChange": "Der Name einer geschützten Rolle kann nicht geändert werden.",
+        "cannotRemoveSuperAdmin": "Du kannst die Super-Administrator-Berechtigung nicht von deiner eigenen Rolle entfernen. Dies würde dich aus dem System aussperren.",
+        "protectedFieldCannotModify": "Geschützte Rollen können ihr Feld \"{{field}}\" nicht ändern. Nur Beschreibung und Berechtigungen können aktualisiert werden.",
+        "protectedCannotDelete": "Die Rolle \"{{label}}\" ist geschützt und kann nicht gelöscht werden. Geschützte Rollen sind für den Systembetrieb unerlässlich."
+      }
+    },
+    "roleField": {
+      "description": "Weist diesem Benutzer Berechtigungen und Zugriffsrechte zu"
+    }
+  },
+  "permissions": {
+    "special": {
+      "fullAccess": "⭐ Vollzugriff (Super-Administrator)",
+      "fullAccessDescription": "Vollständiger Systemzugriff",
+      "allRead": "📖 Vollständiger Lesezugriff",
+      "allReadDescription": "Lesezugriff auf alle Sammlungen",
+      "allCreate": "✏️ Vollständiger Erstellungszugriff",
+      "allCreateDescription": "Erstellungszugriff auf alle Sammlungen",
+      "allUpdate": "📝 Vollständiger Aktualisierungszugriff",
+      "allUpdateDescription": "Aktualisierungszugriff auf alle Sammlungen",
+      "allDelete": "🗑️ Vollständiger Löschzugriff",
+      "allDeleteDescription": "Löschzugriff auf alle Sammlungen"
+    },
+    "operations": {
+      "create": "Erstellen",
+      "read": "Lesen",
+      "update": "Bearbeiten",
+      "delete": "Löschen"
+    },
+    "collection": {
+      "allOperations": "Alle {{collection}} Operationen",
+      "allOperationsDescription": "Alle Operationen für {{collection}}",
+      "operation": "{{operation}} {{collection}}",
+      "operationDescription": "{{operation}} Berechtigung für {{collection}}",
+      "manage": "{{collection}} verwalten",
+      "manageDescription": "Vollständige Verwaltung von {{collection}}",
+      "publish": "{{collection}} veröffentlichen",
+      "publishDescription": "{{collection}} Versionen veröffentlichen"
+    }
+  },
+  "validation": {
+    "roleNotFound": "Rolle nicht gefunden",
+    "cannotAssignRole": "Du hast keine Berechtigung, die Rolle {{roleLabel}} zuzuweisen",
+    "errorValidatingRole": "Fehler beim Validieren der Rollenzuweisung"
+  },
+  "messages": {
+    "syncingRoles": "🔄 Synchronisiere Systemrollen...",
+    "roleSyncCompleted": "✅ Rollensynchronisierung abgeschlossen",
+    "errorSyncingRoles": "❌ Fehler beim Synchronisieren der Rollen:",
+    "createdRole": "✅ Rolle erstellt: {{name}}",
+    "updatedRole": "🔄 Rolle aktualisiert: {{name}}",
+    "createdRoles": "✅ Rollen erstellt: {{names}}",
+    "updatedRoles": "🔄 Rollen aktualisiert: {{names}}",
+    "skippedRoles": "⏭️ Vom Benutzer erstellte Rollen übersprungen: {{names}}",
+    "superAdminRoleCreated": "✅ Super-Administrator-Rolle erstellt",
+    "noAdminCollection": "⚠️ Keine Administrator-Benutzersammlung konfiguriert. Das Berechtigungs-Plugin funktioniert möglicherweise nicht korrekt."
+  },
+  "defaultRoles": {
+    "superAdmin": {
+      "label": "Super-Administrator",
+      "description": "Vollständiger Systemzugriff - automatisch dem ersten Benutzer zugewiesen"
+    },
+    "public": {
+      "label": "Öffentlicher Zugriff",
+      "description": "Standardberechtigungen für nicht authentifizierte Benutzer"
+    },
+    "admin": {
+      "label": "Administrator",
+      "description": "Administratorzugriff ohne Rollenverwaltungsfunktionen"
+    },
+    "editor": {
+      "label": "Editor",
+      "description": "Content-Editor mit eingeschränktem Benutzerzugriff"
+    },
+    "user": {
+      "label": "Frontend-Benutzer",
+      "description": "Standardrolle für Frontend-Benutzer - kann eigenes Profil verwalten"
+    }
+  }
+}

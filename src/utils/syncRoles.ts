@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import type { Payload } from 'payload'
 import { getRolesSlug } from './getRolesSlug'
 import type { SystemRole, SyncResults } from '../types'
+import { t } from '../i18n'
 
 // Re-export for backward compatibility (will be removed in next major version)
 export type DefaultRole = SystemRole
@@ -62,7 +63,7 @@ export async function syncSystemRoles(
             },
           })
           results.created.push(defaultRole.name)
-          console.info(`✅ Created role: ${defaultRole.name}`)
+          console.info(t('messages.createdRole', { name: defaultRole.name }))
         } catch (createError) {
           // Another instance might have created it concurrently
           results.failed.push({
@@ -113,7 +114,7 @@ export async function syncSystemRoles(
 
             if (updateResult) {
               results.updated.push(defaultRole.name)
-              console.info(`🔄 Updated role: ${defaultRole.name}`)
+              console.info(t('messages.updatedRole', { name: defaultRole.name }))
             }
           } catch (updateError) {
             // Update failed - likely due to version mismatch (another instance updated)
@@ -134,13 +135,13 @@ export async function syncSystemRoles(
 
   // Log summary
   if (results.created.length > 0) {
-    console.info('✅ Created roles:', results.created.join(', '))
+    console.info(t('messages.createdRoles', { names: results.created.join(', ') }))
   }
   if (results.updated.length > 0) {
-    console.info('🔄 Updated roles:', results.updated.join(', '))
+    console.info(t('messages.updatedRoles', { names: results.updated.join(', ') }))
   }
   if (results.skipped.length > 0) {
-    console.info('⏭️ Skipped user-created roles:', results.skipped.join(', '))
+    console.info(t('messages.skippedRoles', { names: results.skipped.join(', ') }))
   }
   if (results.failed.length > 0) {
     console.warn('⚠️ Failed operations (likely handled by another instance):', results.failed)

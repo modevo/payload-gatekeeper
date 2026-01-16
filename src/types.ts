@@ -72,6 +72,13 @@ export interface GatekeeperOptions {
    * @example ['pages.read', 'posts.read', 'media.read', 'comments.create']
    */
   publicRolePermissions?: string[]
+
+  /**
+   * Locale for translations
+   * @default 'en'
+   * @example 'de' for German
+   */
+  locale?: 'en' | 'de'
 }
 
 export interface Permission {

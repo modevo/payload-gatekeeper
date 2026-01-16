@@ -17,6 +17,7 @@ import { useField } from '@payloadcms/ui'
 import type { StructuredOption } from '../utils/structurePermissions'
 import { structurePermissions } from '../utils/structurePermissions'
 import { formatLabel } from '../utils/formatLabel'
+import { t } from '../i18n'
 // Inline styles to avoid CSS import issues in node_modules
 const inlineStyles = {
   wrapper: {
@@ -534,7 +535,7 @@ export const PermissionsSelect: React.FC<PermissionsSelectProps> = props => {
           DropdownIndicator: CustomDropdownIndicator,
         }}
         styles={customStyles}
-        placeholder="Select permissions..."
+        placeholder={t('components.permissionsSelect.placeholder')}
         isClearable={!readOnly}
         isSearchable={!readOnly}
         isDisabled={readOnly}

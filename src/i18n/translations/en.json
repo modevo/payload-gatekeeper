@@ -1,0 +1,124 @@
+{
+  "components": {
+    "protectedRoleNotice": {
+      "title": "Protected System Role",
+      "description": "This is a protected system role that is essential for the application's operation. You can customize its description and permissions to meet your needs."
+    },
+    "permissionsSelect": {
+      "placeholder": "Select permissions...",
+      "loading": "Loading permissions..."
+    }
+  },
+  "collections": {
+    "roles": {
+      "description": "Manage admin roles and their permissions",
+      "fields": {
+        "name": {
+          "description": "Unique role identifier (e.g., super_admin, admin, editor)"
+        },
+        "label": {
+          "description": "Display name for the role"
+        },
+        "permissions": {
+          "description": "Select permissions for this role."
+        },
+        "description": {
+          "description": "Optional description of the role and its purpose"
+        },
+        "active": {
+          "description": "Inactive roles cannot be used"
+        },
+        "configHash": {
+          "description": "Hash of the role configuration for version tracking"
+        },
+        "configVersion": {
+          "description": "Version number for optimistic locking"
+        },
+        "systemManaged": {
+          "description": "Indicates if this role is managed by the system"
+        },
+        "visibleFor": {
+          "description": "Select which auth-enabled collections can see and assign this role. Leave empty for all auth collections."
+        }
+      },
+      "errors": {
+        "nameCannotChange": "The name of a protected role cannot be changed.",
+        "cannotRemoveSuperAdmin": "You cannot remove super admin permission from your own role. This would lock you out of the system.",
+        "protectedFieldCannotModify": "Protected roles cannot have their \"{{field}}\" field modified. Only description and permissions can be updated.",
+        "protectedCannotDelete": "The role \"{{label}}\" is protected and cannot be deleted. Protected roles are essential for system operation."
+      }
+    },
+    "roleField": {
+      "description": "Assigns permissions and access rights to this user"
+    }
+  },
+  "permissions": {
+    "special": {
+      "fullAccess": "⭐ Full Access (Super Admin)",
+      "fullAccessDescription": "Complete system access",
+      "allRead": "📖 All Read Access",
+      "allReadDescription": "Read access to all collections",
+      "allCreate": "✏️ All Create Access",
+      "allCreateDescription": "Create access to all collections",
+      "allUpdate": "📝 All Update Access",
+      "allUpdateDescription": "Update access to all collections",
+      "allDelete": "🗑️ All Delete Access",
+      "allDeleteDescription": "Delete access to all collections"
+    },
+    "operations": {
+      "create": "Create",
+      "read": "Read",
+      "update": "Edit",
+      "delete": "Delete"
+    },
+    "collection": {
+      "allOperations": "All {{collection}} Operations",
+      "allOperationsDescription": "All operations for {{collection}}",
+      "operation": "{{operation}} {{collection}}",
+      "operationDescription": "{{operation}} permission for {{collection}}",
+      "manage": "Manage {{collection}}",
+      "manageDescription": "Full management of {{collection}}",
+      "publish": "Publish {{collection}}",
+      "publishDescription": "Publish {{collection}} versions"
+    }
+  },
+  "validation": {
+    "roleNotFound": "Role not found",
+    "cannotAssignRole": "You don't have permission to assign the {{roleLabel}} role",
+    "errorValidatingRole": "Error validating role assignment"
+  },
+  "messages": {
+    "syncingRoles": "🔄 Syncing system roles...",
+    "roleSyncCompleted": "✅ Role sync completed",
+    "errorSyncingRoles": "❌ Error syncing roles:",
+    "createdRole": "✅ Created role: {{name}}",
+    "updatedRole": "🔄 Updated role: {{name}}",
+    "createdRoles": "✅ Created roles: {{names}}",
+    "updatedRoles": "🔄 Updated roles: {{names}}",
+    "skippedRoles": "⏭️ Skipped user-created roles: {{names}}",
+    "superAdminRoleCreated": "✅ Super Admin role created",
+    "noAdminCollection": "⚠️ No admin user collection configured. Permissions plugin may not work correctly."
+  },
+  "defaultRoles": {
+    "superAdmin": {
+      "label": "Super Administrator",
+      "description": "Full system access - automatically assigned to first user"
+    },
+    "public": {
+      "label": "Public Access",
+      "description": "Default permissions for non-authenticated users"
+    },
+    "admin": {
+      "label": "Administrator",
+      "description": "Admin access without role management capabilities"
+    },
+    "editor": {
+      "label": "Editor",
+      "description": "Content editor with limited user access"
+    },
+    "user": {
+      "label": "Frontend User",
+      "description": "Default role for frontend users - can manage own profile"
+    }
+  }
+}

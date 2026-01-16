@@ -8,10 +8,11 @@ interface ProcessingCollectionConfig extends CollectionConfig {
 import { createRolesCollection } from './collections/Roles'
 import { enhanceAdminCollection } from './utils/enhanceAdminCollection'
 import { syncSystemRoles } from './utils/syncRoles'
-import { SUPER_ADMIN_ROLE, PUBLIC_ROLE } from './defaultRoles'
+import { getSuperAdminRole, getPublicRole } from './defaultRoles'
 import { createAfterChangeHook } from './hooks'
 import { setRolesSlug, getRolesSlug } from './utils/getRolesSlug'
 import { createCollectionAccess, createUIVisibilityCheck } from './access'
+import { initI18n, t } from './i18n'
 
 /**
  * Payload Gatekeeper - The ultimate access control plugin for Payload CMS
@@ -32,7 +33,11 @@ export const gatekeeperPlugin = (options: GatekeeperOptions = {}): Plugin => {
       defaultConfig = {},
       excludeCollections = [],
       rolesSlug = 'roles',
+      locale = 'en',
     } = options
+
+    // Initialize i18n with the configured locale
+    initI18n(locale)
 
     // Set the roles slug globally
     setRolesSlug(rolesSlug)
@@ -41,7 +46,7 @@ export const gatekeeperPlugin = (options: GatekeeperOptions = {}): Plugin => {
     const adminCollectionSlug = config.admin?.user
 
     if (!adminCollectionSlug) {
-      console.warn('⚠️ No admin user collection configured. Permissions plugin may not work correctly.')
+      console.warn(t('messages.noAdminCollection'))
     }
 
     // Build collection configs
@@ -192,7 +197,7 @@ export const gatekeeperPlugin = (options: GatekeeperOptions = {}): Plugin => {
           options.syncRolesOnInit === true
 
         if (shouldSyncRoles) {
-          console.info('🔄 Syncing system roles...')
+          console.info(t('messages.syncingRoles'))
           try {
             // Identify admin collections (those with autoAssignFirstUser)
             const adminCollections = Object.entries(finalCollectionConfigs)
@@ -201,15 +206,15 @@ export const gatekeeperPlugin = (options: GatekeeperOptions = {}): Plugin => {
 
             // Configure Super Admin role visibility
             const superAdminRole = {
-              ...SUPER_ADMIN_ROLE,
+              ...getSuperAdminRole(),
               // Super Admin only visible for admin collections
               visibleFor: adminCollections.length > 0 ? adminCollections : undefined
             }
 
             // Prepare public role if not disabled
             const publicRole = !options.disablePublicRole ? {
-              ...PUBLIC_ROLE,
-              permissions: options.publicRolePermissions || PUBLIC_ROLE.permissions
+              ...getPublicRole(options.publicRolePermissions),
+              permissions: options.publicRolePermissions || getPublicRole().permissions
             } : null
 
             // Always include super_admin, public (if enabled), plus any configured roles
@@ -223,10 +228,10 @@ export const gatekeeperPlugin = (options: GatekeeperOptions = {}): Plugin => {
 
             // Only log if there were changes
             if (results.created.length > 0 || results.updated.length > 0) {
-              console.info('✅ Role sync completed')
+              console.info(t('messages.roleSyncCompleted'))
             }
           } catch (error) {
-            console.error('❌ Error syncing roles:', error)
+            console.error(t('messages.errorSyncingRoles'), error)
             // Don't fail initialization if role sync fails
             // The system can still work with existing roles
           }
@@ -244,7 +249,9 @@ export const gatekeeperPlugin = (options: GatekeeperOptions = {}): Plugin => {
 // Export utilities for use outside the plugin
 export { checkPermission, hasPermission, canAssignRole } from './utils/checkPermission'
 export { PERMISSIONS } from './constants'
-export { EXAMPLE_ROLES } from './defaultRoles'
+export { EXAMPLE_ROLES, getExampleRoles } from './defaultRoles'
+export { t, setLocale, getLocale, initI18n, DEFAULT_LOCALE } from './i18n'
+export type { Locale } from './i18n'
 
 // Export types
 export type {

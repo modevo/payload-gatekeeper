@@ -6,6 +6,7 @@ import { formatLabel } from '../utils/formatLabel'
 import { generateCollectionPermissions } from '../utils/generatePermissions'
 import { DEFAULT_SUPER_ADMIN_ROLE } from '../constants'
 import { getRolesSlug } from '../utils/getRolesSlug'
+import { t } from '../i18n'
 
 import type { GatekeeperOptions } from '../types'
 
@@ -30,7 +31,7 @@ export const createRolesCollection = (
     admin: {
       useAsTitle: 'label',
       defaultColumns: ['label', 'name', 'permissions', 'active'],
-      description: 'Manage admin roles and their permissions',
+      description: t('collections.roles.description'),
       group: options.rolesGroup || 'System',
       // Hidden function will be added by the wrapper based on roles.manage permission
     },
@@ -115,7 +116,7 @@ export const createRolesCollection = (
       required: true,
       unique: true,
       admin: {
-        description: 'Unique role identifier (e.g., super_admin, admin, editor)',
+        description: t('collections.roles.fields.name.description'),
       },
     },
     {
@@ -123,7 +124,7 @@ export const createRolesCollection = (
       type: 'text',
       required: true,
       admin: {
-        description: 'Display name for the role',
+        description: t('collections.roles.fields.label.description'),
       },
     },
     {
@@ -136,7 +137,7 @@ export const createRolesCollection = (
         value: perm.value,
       })),
       admin: {
-        description: 'Select permissions for this role.',
+        description: t('collections.roles.fields.permissions.description'),
         className: 'permissions-select-field',
         components: {
           Field: {
@@ -150,7 +151,7 @@ export const createRolesCollection = (
       name: 'description',
       type: 'textarea',
       admin: {
-        description: 'Optional description of the role and its purpose',
+        description: t('collections.roles.fields.description.description'),
       },
     },
     {
@@ -159,7 +160,7 @@ export const createRolesCollection = (
       defaultValue: true,
       required: true,
       admin: {
-        description: 'Inactive roles cannot be used',
+        description: t('collections.roles.fields.active.description'),
         condition: (data) => {
           // Hide the active checkbox for protected roles (they must always be active)
           return !data?.protected
@@ -182,7 +183,7 @@ export const createRolesCollection = (
       admin: {
         hidden: true,
         readOnly: true,
-        description: 'Hash of the role configuration for version tracking',
+        description: t('collections.roles.fields.configHash.description'),
       },
     },
     {
@@ -193,7 +194,7 @@ export const createRolesCollection = (
       admin: {
         hidden: true,
         readOnly: true,
-        description: 'Version number for optimistic locking',
+        description: t('collections.roles.fields.configVersion.description'),
       },
     },
     {
@@ -203,7 +204,7 @@ export const createRolesCollection = (
       defaultValue: false,
       admin: {
         hidden: true,
-        description: 'Indicates if this role is managed by the system',
+        description: t('collections.roles.fields.systemManaged.description'),
       },
     },
     {
@@ -218,7 +219,7 @@ export const createRolesCollection = (
           value: c.slug,
         })),
       admin: {
-        description: 'Select which auth-enabled collections can see and assign this role. Leave empty for all auth collections.',
+        description: t('collections.roles.fields.visibleFor.description'),
       },
     },
   ],
@@ -256,7 +257,7 @@ export const createRolesCollection = (
               collection: getRolesSlug(),
               errors: [
                 {
-                  message: 'The name of a protected role cannot be changed.',
+                  message: t('collections.roles.errors.nameCannotChange'),
                   path: 'name',
                 }
               ]
@@ -281,7 +282,7 @@ export const createRolesCollection = (
                 collection: getRolesSlug(),
                 errors: [
                   {
-                    message: 'You cannot remove super admin permission from your own role. This would lock you out of the system.',
+                    message: t('collections.roles.errors.cannotRemoveSuperAdmin'),
                     path: 'permissions',
                   }
                 ]
@@ -317,7 +318,7 @@ export const createRolesCollection = (
             throw new ValidationError({
               collection: getRolesSlug(),
               errors: disallowedFields.map(field => ({
-                message: `Protected roles cannot have their "${field}" field modified. Only description and permissions can be updated.`,
+                message: t('collections.roles.errors.protectedFieldCannotModify', { field }),
                 path: field,
               }))
             })
@@ -336,7 +337,7 @@ export const createRolesCollection = (
         if (doc?.protected) {
           // Use Forbidden error for unauthorized deletion attempts
           const error = new Forbidden()
-          error.message = `The role "${doc.label || doc.name}" is protected and cannot be deleted. Protected roles are essential for system operation.`
+          error.message = t('collections.roles.errors.protectedCannotDelete', { label: doc.label || doc.name })
           throw error
         }
       }) satisfies CollectionBeforeDeleteHook,
@@ -345,7 +346,7 @@ export const createRolesCollection = (
       (async ({ doc, operation }) => {
         // Create super admin role if it doesn't exist
         if (operation === 'create' && doc.name === DEFAULT_SUPER_ADMIN_ROLE.name) {
-          console.info('✅ Super Admin role created')
+          console.info(t('messages.superAdminRoleCreated'))
         }
         return doc
       }) satisfies CollectionAfterChangeHook,

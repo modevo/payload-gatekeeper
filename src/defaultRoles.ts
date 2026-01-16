@@ -1,40 +1,47 @@
 import type { SystemRole } from './types'
+import { t } from './i18n'
 
 /**
  * Essential system role - always created by the plugin
  * This is the only hardcoded role as it's required for the system to function
  */
-export const SUPER_ADMIN_ROLE: SystemRole = {
+export const getSuperAdminRole = (): SystemRole => ({
   name: 'super_admin',
-  label: 'Super Administrator',
+  label: t('defaultRoles.superAdmin.label'),
   permissions: ['*'],
   protected: true,
   active: true,
-  description: 'Full system access - automatically assigned to first user',
-}
+  description: t('defaultRoles.superAdmin.description'),
+})
+
+// Backward compatibility - returns role with current translations
+export const SUPER_ADMIN_ROLE = getSuperAdminRole()
 
 /**
  * Public role for non-authenticated users
  * This role is automatically applied when no user is logged in
  */
-export const PUBLIC_ROLE: SystemRole = {
+export const getPublicRole = (permissions: string[] = ['*.read']): SystemRole => ({
   name: 'public',
-  label: 'Public Access',
-  permissions: ['*.read'], // Default permissions, can be overridden
+  label: t('defaultRoles.public.label'),
+  permissions,
   protected: true,
   active: true,
-  description: 'Default permissions for non-authenticated users',
+  description: t('defaultRoles.public.description'),
   visibleFor: [], // Not visible in UI for assignment
-}
+})
+
+// Backward compatibility - returns role with current translations
+export const PUBLIC_ROLE = getPublicRole()
 
 /**
  * Example role configurations that can be used in the plugin config
  * These are NOT automatically created - they must be explicitly configured
  */
-export const EXAMPLE_ROLES = {
+export const getExampleRoles = () => ({
   admin: {
     name: 'admin',
-    label: 'Administrator',
+    label: t('defaultRoles.admin.label'),
     permissions: [
       // Backend users management (no role management)
       'backend-users.read',
@@ -54,11 +61,11 @@ export const EXAMPLE_ROLES = {
     ],
     protected: false,
     active: true,
-    description: 'Admin access without role management capabilities',
+    description: t('defaultRoles.admin.description'),
   },
   editor: {
     name: 'editor',
-    label: 'Editor',
+    label: t('defaultRoles.editor.label'),
     permissions: [
       // Read-only for users
       'backend-users.read',
@@ -71,11 +78,11 @@ export const EXAMPLE_ROLES = {
     ],
     protected: false,
     active: true,
-    description: 'Content editor with limited user access',
+    description: t('defaultRoles.editor.description'),
   },
   user: {
     name: 'user',
-    label: 'Frontend User',
+    label: t('defaultRoles.user.label'),
     permissions: [
       // Users can only manage their own profile (enforced at row level)
       'users.read',
@@ -86,6 +93,9 @@ export const EXAMPLE_ROLES = {
     ],
     protected: false,
     active: true,
-    description: 'Default role for frontend users - can manage own profile',
+    description: t('defaultRoles.user.description'),
   },
-}
+})
+
+// Backward compatibility - returns roles with current translations
+export const EXAMPLE_ROLES = getExampleRoles()

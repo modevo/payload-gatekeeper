@@ -3,6 +3,7 @@ import type { GatekeeperOptions, RoleFieldPlacement } from '../types'
 import { getRolesSlug } from './getRolesSlug'
 import { createAfterLoginHook } from '../hooks'
 import { createAfterReadHook } from '../hooks'
+import { t } from '../i18n'
 
 // Options specifically for enhancement
 interface EnhanceOptions extends GatekeeperOptions {
@@ -101,7 +102,7 @@ export const enhanceCollectionWithRole = (
     filterOptions: createRoleFilterOptions(options, collection.slug),
     defaultValue: createRoleDefaultValue(collection.slug),
     admin: {
-      description: 'Assigns permissions and access rights to this user',
+      description: t('collections.roleField.description'),
       ...(adminPosition || {}),
     },
   }
@@ -214,7 +215,7 @@ const createRoleValidation = (options: GatekeeperOptions) => {
       })
 
       if (!targetRole) {
-        return 'Role not found'
+        return t('validation.roleNotFound')
       }
 
       // Get user's permissions
@@ -231,13 +232,13 @@ const createRoleValidation = (options: GatekeeperOptions) => {
       // Cast targetRole to the type expected by canAssignRole
       const roleForCheck = targetRole as { protected?: boolean; permissions?: string[]; active?: boolean }
       if (!canAssignRole(userPermissions, roleForCheck)) {
-        return `You don't have permission to assign the ${targetRole.label || targetRole.name} role`
+        return t('validation.cannotAssignRole', { roleLabel: targetRole.label || targetRole.name })
       }
 
       return true
     } catch (error) {
       console.error('Role validation error:', error)
-      return 'Error validating role assignment'
+      return t('validation.errorValidatingRole')
     }
   }
 }

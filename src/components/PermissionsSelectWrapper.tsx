@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import type { PermissionsSelectProps } from './PermissionsSelect'
 import { PermissionsSelect } from './PermissionsSelect'
+import { t } from '../i18n'
 
 /**
  * Wrapper component that ensures PermissionsSelect only renders on the client
@@ -60,7 +61,9 @@ export const PermissionsSelectWrapper: React.FC<PermissionsSelectProps> = props 
         {props.admin?.description && (
           <p style={loadingStyles.description}>{props.admin.description}</p>
         )}
-        <div style={loadingStyles.loading}>Loading permissions...</div>
+        <div style={loadingStyles.loading}>
+          {t('components.permissionsSelect.loading')}
+        </div>
       </div>
     )
   }
